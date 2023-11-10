@@ -11,27 +11,37 @@
                 </div>
 
                 <!-- Navigation Links -->
-                @if (request()->routeIs('dashboard'))
+              
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    <x-nav-link href="{{ route('dashboard') }}" wire:navigate :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
-                @endif
-                @if (request()->routeIs('customer'))
+                
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('customer') }}" :active="request()->routeIs('customer')">
+                    <x-nav-link href="{{ route('customer') }}" wire:navigate :active="request()->routeIs('customer')">
                         Customers
                     </x-nav-link>
                 </div>
-                @endif
-                @if (request()->routeIs('activity'))
+              
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('activity') }}" :active="request()->routeIs('activity')">
+                    <x-nav-link href="{{ route('activity') }}" wire:navigate :active="request()->routeIs('activity')">
                         Activity
                     </x-nav-link>
                 </div>
-                @endif
+                    
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('manque') }}" wire:navigate :active="request()->routeIs('manque')">
+                        Manque
+                    </x-nav-link>
+                </div>
+              
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('subscription') }}" wire:navigate :active="request()->routeIs('subscription')">
+                        Subscription
+                    </x-nav-link>
+                </div>
+              
                 
                 
             </div>

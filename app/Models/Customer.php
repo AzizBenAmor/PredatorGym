@@ -18,7 +18,7 @@ class Customer extends Model
 
     public function activities(){
 
-        return $this->belongsToMany(Activity::class)->withPivot('manque')->withTimestamps();
+        return $this->belongsToMany(Activity::class)->withPivot('manque','date')->withTimestamps();
 
     }
 

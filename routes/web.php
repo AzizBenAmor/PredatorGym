@@ -33,6 +33,12 @@ Route::middleware([
     Route::get('/Activity', function () {
         return view('dashboard.Activity');
     })->name('activity');
+    Route::get('/Manque', function () {
+        return view('dashboard.Manque');
+    })->name('manque');
+    Route::get('/Subscription', function () {
+        return view('dashboard.Subscription');
+    })->name('subscription');
     Route::get('/addActivity', function () {
         return view('dashboard.addActivity');
     })->name('addActivity');

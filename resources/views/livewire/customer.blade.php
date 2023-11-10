@@ -1,9 +1,9 @@
 <div>
     <div>
-        <div class="ml-28 mb-6">
+        <div class=" mb-6">
           <button  wire:click='addCustomer'  type="button" class=" mt-5 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add Customer</button>
          </div>
-        <section class="pl-28 ">
+        <section class=" ">
             
             <div class=" mx-auto max-w-screen-xl ">
                 
@@ -70,26 +70,23 @@
                                     <td class="px-4 py-3 ">
                                         @foreach ($customer->activities as $activity)
                                             {{ $activity->name }} <br>  
-                                            @endforeach
+                                        @endforeach
                                     </td>
                                     
                                    
                                         
                                         <td  class="px-4 py-3" > 
                                             @foreach ($customer->activities as $activity)
-                                            <p class= "  {{ $activity->pivot->created_at > now()->subMonth() ? 'text-green-500' : 'text-red-500' }}">
-                                            {{ $activity->pivot->created_at > now()->subMonth() ? 'Still' : 'Over' }} 
+                                            <p class= "  {{ $activity->pivot->date > now()->subMonth() ? 'text-green-500' : 'text-red-500' }}">
+                                            {{ $activity->pivot->date > now()->subMonth() ? 'Still' : 'Over' }} 
                                         </p>
                                             @endforeach
                                         </td>
                                        
-                                  
-                                       
-                                       
                                        
                                     <td class="px-4 py-3">
                                         @foreach ($customer->activities as $activity)
-                                        {{ $activity->pivot->created_at }} <br>
+                                        {{ $activity->pivot->date }} <br>
                                         @endforeach
                                     </td>
                                    

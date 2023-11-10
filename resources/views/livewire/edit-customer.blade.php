@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit.prevent='CreateCustomer' class=" ml-44 mt-9 mb-9 mr-7">
+    <form wire:submit.prevent='UpdateCustomer' class=" ml-5 mt-9 mb-9 mr-7">
       <x-flash-messages />
         <div class="mb-6">
           <label  class="block mb-2 text-sm font-medium ">Name</label>
@@ -29,31 +29,22 @@
             <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span> {{ $message }} </p>
            @enderror
           </div>
-         
+    
         @for ($i = 0; $i < $ActivityCounter; $i++)
         <div class="mb-6">
             <label  class="block mb-2 text-sm font-medium ">Activity</label>
-            <select type="number" wire:model.live="activity.{{ $i }}"  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " >
-             
-
-                
-                  <option value="{{ $customer->activities[$i]->id }}">{{ $customer->activities[$i]->name}}</option>
-                @foreach ($activities as $activity)
-                    @if ($activity->id !== $customer->activities[$i]->id)
-                        <option value="{{ $activity->id }}">{{ $activity->name}}</option>
-                    @endif
-                @endforeach
-               
-            </select>
+            <p  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " >{{ $customer->activities[$i]->name}}</p>
             @error("activity.$i")
             <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span> {{ $message }} </p>
             @enderror
-          
+            <button wire:click.prevent='Renouvellement({{ $customer->activities[$i]->id }})'  {{  $customer->activities[$i]->pivot->date > now()->subMonth() ? 'hidden' : '' }}  class="mt-5 text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Subscription Renewal</button>
+            <button wire:click.prevent='DeleteActivity({{ $customer->activities[$i]->id }})'  class="mt-5 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Remove Activity</button>
           </div>
-          <button wire:click.prevent='decrementActivityCounter'  class="mb-5 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Remove Activity</button>
+          
         @endfor
-
+       
         @for ($i = 0; $i < $ActivityEditCounter; $i++)
+      
         <div class="mb-6">
             <label  class="block mb-2 text-sm font-medium ">Activity</label>
             <select type="number" wire:model.live="activityEdit.{{ $i }}"  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " >
@@ -70,21 +61,33 @@
             @enderror
           
           </div>
-          <button wire:click.prevent='AddNewActivity(0)'   class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Remove Activity</button>
+          <button wire:click.prevent='AddNewActivity(0)'   class="mb-5 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Remove Activity</button>
         @endfor
 
    
         <div class="mb-6 {{ $manque ? '' : 'hidden'}}">
             <label  class="block mb-2 text-sm font-medium" >Manque</label>
-            <input type="number" wire:model.live="manque"  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " >
+            <input type="number" wire:model='manque' class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
             @error("manque")
             <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span> {{ $message }} </p>
          @enderror  
+         <button wire:click.prevent='RemoveManque()'   class=" mt-5 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Remove Manque</button>
+
         </div>
-       
-       
+        <div class="mb-6 {{ $manque ? 'hidden' : ''}}">
+          <input id="default-checkbox" type="checkbox" wire:model.live='showManque' value="1" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 ">
+          <label for="default-checkbox" class="ml-2 text-sm font-medium text-gray-900 ">Manque</label>
+      </div>
+
+        <div class="mb-6 {{ $manque ? 'hidden' : ''}} {{ $showManque ? '' : 'hidden'}} ">
+          <label  class="block mb-2 text-sm font-medium " >Manque</label>
+          <input type="number" wire:model.live="EditManque"  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  " >
+          @error("manque")
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span> {{ $message }} </p>
+       @enderror  
+        </div>
         <button wire:click.prevent='AddNewActivity(1)' class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Add Activity</button>
        
-        <button  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create new customer</button>
+        <button  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Update customer</button>
       </form>
 </div>

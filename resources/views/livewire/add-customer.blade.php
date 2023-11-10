@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit.prevent='CreateCustomer' class=" ml-44 mt-9 mb-9 mr-7">
+    <form wire:submit.prevent='CreateCustomer' class=" ml-5 mt-9 mb-9 mr-7">
       <x-flash-messages />
         <div class="mb-6">
           <label  class="block mb-2 text-sm font-medium ">Name</label>

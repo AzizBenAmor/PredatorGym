@@ -55,14 +55,14 @@ class AddCustomer extends Component
 
             if ($this->showManque== 1) {
 
-                $customer->activities()->attach($this->activity[0], ['manque' => $this->manque]);
+                $customer->activities()->attach($this->activity[0], ['manque' => $this->manque,'date'=>now()]);
                 for ($i=1; $i <count($this->activity) ; $i++) { 
-                    $customer->activities()->attach($this->activity[$i]);
+                    $customer->activities()->attach($this->activity[$i],['date'=>now()]);
                 }
             }
             else {
                 for ($i=0; $i <count($this->activity) ; $i++) { 
-                    $customer->activities()->attach($this->activity[$i]);
+                    $customer->activities()->attach($this->activity[$i],['date'=>now()]);
                 }
             }
            

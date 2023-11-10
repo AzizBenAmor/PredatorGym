@@ -1,9 +1,7 @@
 <div>
     <div>
-        <div class=" mb-6">
-          <button wire:click='addActivity' type="button" class=" mt-5 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add Activity</button>
-         </div>
-        <section >
+        
+        <section class=" mt-24">
             
             <div class=" mx-auto max-w-screen-xl ">
                 
@@ -27,7 +25,6 @@
                                     placeholder="Search" required="">
                             </div>
                         </div>
-                    
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-500 ">
@@ -37,18 +34,21 @@
                                
                                 <tr>
                                    @include('livewire.includes.svgSortTh',[
-                                    'displayName'=>'Activity',
+                                    'displayName'=>'Name',
                                     'name'=>'name'
                                    ])
                                     @include('livewire.includes.svgSortTh',[
-                                        'displayName'=>'Price',
-                                        'name'=>'price'
+                                        'displayName'=>'Number',
+                                        'name'=>'number'
                                        ])  
                                   <th scope="col" class="px-4 py-3">
-                                    Number of Customers
+                                    Activities
+                                  </th>
+                                  <th scope="col" class="px-4 py-3">
+                                    Subscription
                                   </th>
                                    @include('livewire.includes.svgSortTh',[
-                                    'displayName'=>'Created At',
+                                    'displayName'=>'Joined At',
                                     'name'=>'created_at'
                                    ])
                                    
@@ -58,19 +58,41 @@
                                 </tr>
                             </thead>                           
                             <tbody>
-                                @foreach ($activities as $activity)
-                                <tr class="border-b " wire:key='{{ $activity->id }}'>
+                                @foreach ($customers as $customer)
+                                <tr class="border-b " wire:key='{{ $customer->id }}'>
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
-                                        {{ $activity->name }}</th>
-                                    <td class="px-4 py-3"> {{ $activity->price }} DT</td>
-                                    <td class="px-4 py-3"> {{ count($activity->customers) }}</td>
-                                    <td class="px-4 py-3">{{ $activity->created_at }}</td>
+                                        {{ $customer->name }}</th>
+                                    <td class="px-4 py-3"> {{ $customer->number }}</td>
+                                   
+                                    <td class="px-4 py-3 ">
+                                        @foreach ($customer->activities as $activity)
+                                            {{ $activity->name }} <br>  
+                                        @endforeach
+                                    </td>
+                                    
+                                   
+                                        
+                                        <td  class="px-4 py-3" > 
+                                            @foreach ($customer->activities as $activity)
+                                            <p class= "  {{ $activity->pivot->date > now()->subMonth() ? 'text-green-500' : 'text-red-500' }}">
+                                            {{ $activity->pivot->date > now()->subMonth() ? 'Still' : 'Over' }} 
+                                        </p>
+                                            @endforeach
+                                        </td>
+                                       
+                                       
+                                    <td class="px-4 py-3">
+                                        @foreach ($customer->activities as $activity)
+                                        {{ $activity->pivot->date }} <br>
+                                        @endforeach
+                                    </td>
+                                   
                                     <td class="px-4 py-3 flex items-center justify-even">
                                         <div class="flex items-center space-x-2">
-                                            <a href="{{ route('showActivity',$activity->id) }}" wire:navigate class="px-3 py-1 bg-gray-700 text-white rounded">show</a> 
-                                            <a href="{{ route('editActivity',$activity->id) }}" wire:navigate class="px-3 py-1 bg-gray-700 text-white rounded">Edit</a> 
-                                            <button wire:confirm='do you want to delete this customer ?' wire:click="delete({{ $activity->id }})" class="px-3 py-1 bg-red-500 text-white rounded">X</button>
+                                            <a href="{{ route('showCustomer',$customer->id) }}" wire:navigate class="px-3 py-1 bg-gray-700 text-white rounded">show</a> 
+                                            <a href="{{ route('editCustomer',$customer->id) }}" wire:navigate class="px-3 py-1 bg-gray-700 text-white rounded">Edit</a> 
+                                            <button wire:confirm='do you want to delete this customer ?' wire:click="delete({{ $customer->id }})" class="px-3 py-1 bg-red-500 text-white rounded">X</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -96,7 +118,7 @@
                             </div>
                         </div>
                    
-                        {{ $activities->links() }}
+                        {{ $customers->links() }}
                     
                     </div>
                 </div>
